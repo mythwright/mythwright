@@ -1,20 +1,29 @@
-import React, {useState, useEffect} from 'react';
 import './App.css';
+import React from "react";
+import {
+  Outlet,
+  ReactLocation,
+  Router,
+} from "react-location";
 
-import axios from 'axios';
-
-import Mappings from "./mappings/Mappings";
 import NavBar from "./nav/NavBar";
+
+const location = new ReactLocation();
 
 function App() {
   return (
-    <div className="App min-h-screen">
-      <NavBar />
-      <div className={"h-16"}/>
-      <div className={"w-5/6 min-h-screen mx-auto"}>
-        <Mappings />
+    <Router location={location} routes={
+      [
+        {path: "/", element: <div>Home</div>},
+        {path: "/inventory", element: <div>Inventory</div>},
+        {path:"/mappings", element: <div>Mappings</div>}
+      ]
+    }>
+      <div className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white min-h-screen">
+        <NavBar />
+        <Outlet />
       </div>
-    </div>
+    </Router>
   );
 }
 
