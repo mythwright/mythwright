@@ -2,9 +2,21 @@ import React from "react";
 import NavLink from "./NavLink";
 import NavBrand from "./NavBrand";
 
+import { MdOutlineDarkMode,MdDarkMode } from "react-icons/md";
+
 function NavBar() {
+  const toggleTheme = () => {
+    const theme = localStorage.getItem("theme");
+    localStorage.setItem("theme", theme == "dark" ? "light" : "dark")
+    if (theme == "dark") {
+      document.documentElement.classList.remove('dark')
+    } else {
+      document.documentElement.classList.add('dark')
+    }
+  }
+
   return (
-    <nav className="bg-white shadow dark:bg-gray-800">
+    <nav className="bg-white dark:bg-gray-800">
       <div className="container px-6 py-4 mx-auto">
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex items-center justify-between">
@@ -37,14 +49,6 @@ function NavBar() {
               <NavLink to={"/settings"}>Settings</NavLink>
             </div>
             <div className="flex items-center mt-4 md:mt-0">
-              <a
-                href={"#"}
-                className={
-                  "hidden mx-4 text-gray-600 md:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
-                }
-              >
-                Change Log
-              </a>
               <button
                 className="hidden mx-4 text-gray-600 md:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
                 aria-label="show notifications"
@@ -63,6 +67,14 @@ function NavBar() {
                     strokeLinejoin="round"
                   />
                 </svg>
+              </button>
+
+              <button
+                className="hidden mx-4 text-gray-600 md:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
+                aria-label="toggle theme"
+                onClick={toggleTheme}
+              >
+                {<MdDarkMode className={"w-6 h-6"} />}
               </button>
 
               <button
