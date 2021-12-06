@@ -7,7 +7,11 @@ module.exports = {
   // purge: [],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'reliquary-bridge': "url('/Reliquary_Bridge.jpg')"
+      }
+    },
   },
   variants: {
     extend: {},

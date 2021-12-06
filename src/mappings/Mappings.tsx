@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import axios from "axios";
+import axios, {AxiosPromise} from "axios";
+import {DefaultGenerics, LoaderFn, Route, useMatch} from "react-location";
 
 interface CraftingMaterial {
   id: number;
@@ -21,38 +22,11 @@ function camelToSpaces(s: string): string {
 
 const aaaa = () => {};
 
-function Mappings() {
-  const [materials, setMaterials] = useState<CraftingMaterial[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+export function Mappings() {
   const [search, setSearch] = useState<string>("");
   const [salvages, setSalvages] = useState<SalvageItem[]>([]);
 
-  useEffect(() => {
-    if (loading)
-      axios
-        .get<CraftingMaterial[]>(
-          "https://api.silveress.ie/gw2/v1/items/json?filter=type:CraftingMaterial&fields=id,name"
-        )
-        .then((resp) => {
-          setMaterials(resp.data);
-        })
-        // .catch(err => console.log(err))
-        .finally(() => setLoading(false));
-  });
-
-  useEffect(() => {
-    if (salvages.length < 1) {
-      axios
-        .get(
-          "https://api.silveress.ie/gw2/v1/items/json?filter=description:Salvage Item"
-        )
-        .then((resp) => {
-          const salvs: SalvageItem[] = [];
-          Object.keys(resp.data).forEach((v) => salvs.push(resp.data[v]));
-          setSalvages(salvs);
-        });
-    }
-  });
+  const { data: { mappings }} = useMatch();
 
   return (
     <div>
@@ -83,23 +57,15 @@ function Mappings() {
           setSearch(a.target.value);
         }}
       />
-      <select>
-        {materials.length > 0
-          ? materials
-              .filter((mat) =>
-                mat["name"].toLowerCase().includes(search.toLowerCase())
-              )
-              .map((m) => {
-                return (
-                  <option key={m.id} value={m.name}>
-                    {m.name}
-                  </option>
-                );
-              })
-          : null}
-      </select>
     </div>
   );
 }
+
+export async function mappingsLoader() : Promise<any> {
+  return {
+    mappings: await axios.get("https://api.silveress.ie/gw2/v1/items/json?filter=description:Salvage Item")
+  }
+}
+
 
 export default Mappings;
