@@ -2,7 +2,10 @@ import React from "react";
 import {Outlet, ReactLocation, Router} from "react-location";
 
 import NavBar from "./nav/NavBar";
-import {mappingsLoader, Mappings} from "./mappings/Mappings";
+import mappingRoute from "./mappings/Mappings";
+import inventoryRoute from "./inventory/Inventory";
+import homeRoute from "./home/Home";
+import settingsRoute from "./settings/Settings";
 
 const location = new ReactLocation();
 
@@ -11,14 +14,10 @@ function App() {
     <Router
       location={location}
       routes={[
-        {path: "/", element: <div>Home</div>},
-        {path: "/inventory", element: <div>Inventory</div>},
-        {
-          path: "/mappings",
-          loader: mappingsLoader,
-          element: <Mappings />
-        },
-        {path: "/settings", element: <div>Settings</div>},
+        homeRoute,
+        inventoryRoute,
+        mappingRoute,
+        settingsRoute
       ]}
     >
       <div className="text-black dark:text-white min-h-screen">
